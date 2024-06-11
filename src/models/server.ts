@@ -1,6 +1,8 @@
 import express, { Application } from 'express';
 import routesCertificate from '../routes/certificate-router';
 import routesUser from '../routes/user-router';
+import { Certificate } from './certificate';
+import User from './user';
 
 class Server {
 	private _app: Application;
@@ -8,11 +10,12 @@ class Server {
 
 	constructor() {
 		this._app = express();
-		this._port = process.env.PORT || '3000';
+		this._port = process.env.PORT || '3001';
 
+		this.listen();
 		this.middlewares();
 		this.routes();
-		this.listen();
+		this.dbConnection();
 	}
 
 	listen() {
@@ -28,6 +31,18 @@ class Server {
 	routes() {
 		this._app.use('/api/certificates', routesCertificate);
 		this._app.use('/api/users', routesUser);
+	}
+
+	async dbConnection() {
+		try {
+			// await sequelize.authenticate(); // Testear Connection
+			// console.log('Database online');
+
+			await Certificate.sync();
+			await User.sync();
+		} catch (error) {
+			console.log('Unable to connect to database', error);
+		}
 	}
 }
 
