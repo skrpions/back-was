@@ -85,7 +85,7 @@ export const loginUser = async (req: Request, res: Response) => {
 		const token = jwt.sign(
 			{ id: user.id, username: user.username, name: user.name, lastname: user.lastname },
 			process.env.JWT_SECRET || 'was_secret',
-			{ expiresIn: '1h' } // Configura el tiempo de expiración como desees
+			{ expiresIn: '1h' } // Configuración del tiempo de expiración
 		);
 
 		// Responder con el usuario autenticado y el token
