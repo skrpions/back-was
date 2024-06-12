@@ -1,6 +1,5 @@
 // controllers/user-controller.ts
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
 import User from '../models/user';
 import jwt from 'jsonwebtoken';
 
@@ -23,13 +22,10 @@ export const newUser = async (req: Request, res: Response) => {
 			});
 		}
 
-		// Encriptar la contraseña
-		const hashedPassword = await bcrypt.hash(password, 10);
-
-		// Crear el nuevo usuario
+		// Crear el nuevo usuario sin encriptar la contraseña
 		const newUser: any = await User.create({
 			username,
-			password: hashedPassword,
+			password, // Guardar la contraseña sin encriptar
 			name,
 			lastname,
 			boss,
@@ -54,6 +50,7 @@ export const newUser = async (req: Request, res: Response) => {
 		});
 	}
 };
+
 export const loginUser = async (req: Request, res: Response) => {
 	try {
 		const { username, password } = req.body;
@@ -73,9 +70,8 @@ export const loginUser = async (req: Request, res: Response) => {
 			});
 		}
 
-		// Verificar la contraseña
-		const validPassword = await bcrypt.compare(password, user.password);
-		if (!validPassword) {
+		// Verificar la contraseña sin encriptación
+		if (password !== user.password) {
 			return res.status(400).json({
 				msg: 'Usuario o contraseña incorrectos',
 			});

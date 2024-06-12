@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../db/connection';
 import User from './user';
+import Title from './titles';
 
 export const Certificate = sequelize.define(
 	'certificate',
@@ -10,8 +11,12 @@ export const Certificate = sequelize.define(
 			autoIncrement: true,
 			primaryKey: true,
 		},
-		title: {
-			type: DataTypes.STRING,
+		titleId: {
+			type: DataTypes.INTEGER,
+			references: {
+				model: Title,
+				key: 'id',
+			},
 			allowNull: false,
 		},
 		institution: {
@@ -43,3 +48,4 @@ export const Certificate = sequelize.define(
 
 User.hasMany(Certificate, { foreignKey: 'userId', sourceKey: 'id' });
 Certificate.belongsTo(User, { foreignKey: 'userId', targetKey: 'id' });
+Certificate.belongsTo(Title, { foreignKey: 'titleId', targetKey: 'id' });

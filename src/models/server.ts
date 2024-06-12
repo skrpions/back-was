@@ -1,9 +1,11 @@
 import express, { Application } from 'express';
 import routesCertificate from '../routes/certificate-router';
 import routesUser from '../routes/user-router';
+import routesTitle from '../routes/title-router';
 import { Certificate } from './certificate';
 import User from './user';
 import cors from 'cors';
+import Title from './titles';
 
 class Server {
 	private _app: Application;
@@ -34,17 +36,16 @@ class Server {
 	}
 
 	routes() {
-		this._app.use('/api/certificates', routesCertificate);
+		this._app.use('/api/titles', routesTitle); // Añadir rutas de titles
 		this._app.use('/api/users', routesUser);
+		this._app.use('/api/certificates', routesCertificate);
 	}
 
 	async dbConnection() {
 		try {
-			// await sequelize.authenticate(); // Testear Connection
-			// console.log('Database online');
-
-			await Certificate.sync();
+			await Title.sync();
 			await User.sync();
+			await Certificate.sync();
 		} catch (error) {
 			console.log('Unable to connect to database', error);
 		}
