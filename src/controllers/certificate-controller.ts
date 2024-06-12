@@ -3,13 +3,24 @@ import { Certificate } from '../models/certificate';
 import User from '../models/user';
 
 // Obtener la lista de certificados
-// Obtener la lista de certificados
 export const getCertificates = async (req: Request, res: Response) => {
 	try {
 		const listCertificates = await Certificate.findAll({ include: [User] });
 		res.json(listCertificates);
 	} catch (error) {
 		res.status(500).json({ error: 'Error al obtener los certificados' });
+	}
+};
+
+// Obtener la lista de certificados asociados a un usuario (userId)
+export const getUserCertificates = async (req: Request, res: Response) => {
+	try {
+		const userId = req.params.userId; // Obtener el ID del usuario de los parámetros de la solicitud
+		const userCertificates = await Certificate.findAll({ where: { userId } });
+		res.json(userCertificates);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Error al obtener los certificados del usuario' });
 	}
 };
 

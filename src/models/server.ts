@@ -3,6 +3,7 @@ import routesCertificate from '../routes/certificate-router';
 import routesUser from '../routes/user-router';
 import { Certificate } from './certificate';
 import User from './user';
+import cors from 'cors';
 
 class Server {
 	private _app: Application;
@@ -25,7 +26,11 @@ class Server {
 	}
 
 	middlewares() {
+		// Parseo body
 		this._app.use(express.json());
+
+		// Cors
+		this._app.use(cors());
 	}
 
 	routes() {

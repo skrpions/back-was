@@ -5,6 +5,7 @@ import {
 	createCertificate,
 	updateCertificate,
 	deleteCertificate,
+	getUserCertificates,
 } from '../controllers/certificate-controller';
 import { verifyToken } from '../utils/verify-token';
 
@@ -15,5 +16,8 @@ router.get('/:id', verifyToken, getCertificateById); // Obtener un certificado p
 router.post('/', verifyToken, createCertificate); // Crear un nuevo certificado
 router.put('/:id', verifyToken, updateCertificate); // Actualizar un certificado por ID
 router.delete('/:id', verifyToken, deleteCertificate); // Eliminar un certificado por ID
+
+// Obtener los certificados de un usuario específico
+router.get('/user/:userId', verifyToken, getUserCertificates);
 
 export default router;
