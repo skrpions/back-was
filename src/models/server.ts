@@ -22,8 +22,9 @@ class Server {
 	}
 
 	listen() {
-		this._app.listen(this._port, () => {
-			console.log(`Server running on port ${this._port}`);
+		const port = parseInt(this._port, 10);
+		this._app.listen(port, '0.0.0.0', () => {
+			console.log(`Server running on port ${port}`);
 		});
 	}
 
@@ -32,7 +33,12 @@ class Server {
 		this._app.use(express.json());
 
 		// Cors
-		this._app.use(cors());
+		this._app.use(cors({
+			origin: '*', // Permitir todas las orígenes durante pruebas
+			//origin: ['http://45.235.40.10', 'http://45.235.40.10:3001'], // La IP pública de mi servidor IIS
+			methods: ['GET', 'POST', 'PUT', 'DELETE'],
+			allowedHeaders: ['Content-Type', 'Authorization']
+		  }));
 	}
 
 	routes() {
