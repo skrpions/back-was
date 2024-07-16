@@ -39,6 +39,10 @@ export const Certificate = sequelize.define(
 			},
 			allowNull: false,
 		},
+		professionalCardIssueDate: {
+			type: DataTypes.DATE,
+			allowNull: true,
+		},
 	},
 	{
 		tableName: 'certificates',
@@ -48,4 +52,4 @@ export const Certificate = sequelize.define(
 
 User.hasMany(Certificate, { foreignKey: 'userId', sourceKey: 'id' });
 Certificate.belongsTo(User, { foreignKey: 'userId', targetKey: 'id' });
-Certificate.belongsTo(Title, { foreignKey: 'titleId', targetKey: 'id' });
+Certificate.belongsTo(Title, { foreignKey: 'titleId', targetKey: 'id' })

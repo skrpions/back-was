@@ -43,7 +43,7 @@ export const getCertificateById = async (req: Request, res: Response) => {
 // Crear un nuevo certificado
 export const createCertificate = async (req: Request, res: Response) => {
 	try {
-		const { userId, titleId, institution, certificationDate, certificateType } = req.body;
+		const { userId, titleId, institution, certificationDate, certificateType, professionalCardIssueDate } = req.body;
 		const user = await User.findByPk(userId);
 		if (!user) {
 			return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -58,6 +58,7 @@ export const createCertificate = async (req: Request, res: Response) => {
 			institution,
 			certificationDate,
 			certificateType,
+			professionalCardIssueDate,
 		});
 		res.status(201).json(newCertificate);
 	} catch (error) {
@@ -69,7 +70,7 @@ export const createCertificate = async (req: Request, res: Response) => {
 export const updateCertificate = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
-		const { userId, titleId, institution, certificationDate, certificateType } = req.body;
+		const { userId, titleId, institution, certificationDate, certificateType, professionalCardIssueDate } = req.body;
 
 		// Buscar el certificado actual
 		const currentCertificate = await Certificate.findByPk(id);
@@ -85,6 +86,7 @@ export const updateCertificate = async (req: Request, res: Response) => {
 			institution,
 			certificationDate: new Date(certificationDate).toISOString(),
 			certificateType,
+			professionalCardIssueDate: new Date(professionalCardIssueDate).toISOString(),
 		};
 
 		// Actualizar el certificado y obtener el número de filas afectadas
